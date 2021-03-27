@@ -1,0 +1,27 @@
+GET http://localhost:8888/api/users
+
+###
+
+GET http://localhost:8888/api/users? id=1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Accept-Language: ru-RU, en-EN
+
+###
+
+POST http://localhost:8888/API/uSeRs
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "First"
+}
+
+###
+
+POST http://localhost:8888/API/uSeRs
+Content-Type: application/xml
+
+<User>
+<id>2</id>
+<name>Second</name>
+</User>
