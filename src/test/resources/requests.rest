@@ -1,27 +1,82 @@
+################################################################################################################## UESRS
+
 GET http://localhost:8888/api/users
+Content-Type: application/json
+IDS:
 
 ###
 
-GET http://localhost:8888/api/users? id=1
+GET http://localhost:8888/api/users
+Content-Type: application/json, application/xml
 Accept: text/html, application/xhtml+xml, image/jxr, */*
 Accept-Language: ru-RU, en-EN
+IDS: 1, 2, 3
 
 ###
 
 POST http://localhost:8888/API/uSeRs
 Content-Type: application/json
 
-{
-  "id": 1,
-  "name": "First"
-}
+[
+  {"id": 1, "name": "First"},
+  {"id": 2, "name": "Second"}
+]
 
 ###
 
 POST http://localhost:8888/API/uSeRs
 Content-Type: application/xml
 
-<User>
-<id>2</id>
-<name>Second</name>
-</User>
+<Users>
+    <User>
+        <id>2</id>
+        <name>SECOND</name>
+    </User>
+    <User>
+        <id>3</id>
+        <name>THIRD</name>
+    </User>
+</Users>
+
+############################################################################################################## EMPLOYEES
+
+GET http://localhost:8888/api/employees
+Content-Type: application/xml
+IDS: 2, 3
+
+###
+
+GET http://localhost:8888/api/employees
+Content-Type: application/xml, application/json
+IDS:
+
+###
+
+POST http://localhost:8888/API/employees
+Content-Type: application/json
+
+[
+  {"id": 2, "firstName": "HUCKLEBERRY", "lastName": "FINN"},
+  {"id": 3, "firstName": "BECKY", "lastName": "THATCHER"}
+]
+
+
+###
+
+POST http://localhost:8888/API/employees
+Content-Type: application/xml
+
+<Employees>
+    <item>
+        <id>1</id>
+        <firstName>Tom</firstName>
+        <lastName>Soyer</lastName>
+    </item>
+    <item>
+        <id>2</id>
+        <firstName>Huckleberry</firstName>
+        <lastName>Finn</lastName>
+    </item>
+</Employees>
+
+###

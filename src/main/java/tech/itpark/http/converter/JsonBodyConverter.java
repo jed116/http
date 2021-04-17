@@ -2,40 +2,33 @@ package tech.itpark.http.converter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import tech.itpark.http.BodyConverter;
-import tech.itpark.http.Request;
 
 import java.nio.charset.StandardCharsets;
 
 public class JsonBodyConverter implements BodyConverter {
     @Override
-    public boolean canRead(Request request) {
-        if(request == null ) {
-            return false;
-        }
-        if(!request.getHeaders().containsKey("content-type")){
-            return false;
-        }
-        if(!String.join(" , ", request.getHeaders().get("content-type")).contains("json")){
-            return false;
-        }
-        return true;
+    public boolean isConverted(String contentType){
+        return contentType.toLowerCase().contains("json");
     }
 
     @Override
-    public boolean canWrite(Class<?> cls) {
-        return true;
-    }
-
-    @Override
-    public <T> T convert(Request request, Class<T> cls) {
-        Gson gson = new Gson();
-        String json = new String(request.getBody(), StandardCharsets.UTF_8);
+    public <T> T convert(byte[] body, Class<T> cls) {
         T result = null;
         try {
-            result = gson.fromJson(json, cls);
+            result = new Gson().fromJson(new String(body, StandardCharsets.UTF_8), cls);
         }catch (JsonSyntaxException e){
             return null;
+        }
+        return result;
+    }
+
+    @Override
+    public <T> String unconvert(T object) {
+        String result = null;
+        try {
+            result = new Gson().toJson(object);
+        } catch (Exception e) {
+            result = null;
         }
         return result;
     }

@@ -4,42 +4,34 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import tech.itpark.http.BodyConverter;
-import tech.itpark.http.Request;
-
 import java.nio.charset.StandardCharsets;
 
 public class XmlBodyConverter implements BodyConverter {
     @Override
-    public boolean canRead(Request request) {
-        if(request == null ) {
-            return false;
-        }
-        if(!request.getHeaders().containsKey("content-type")){
-            return false;
-        }
-        if(!String.join(" , ", request.getHeaders().get("content-type")).contains("xml")){
-            return false;
-        }
-        return true;
+    public boolean isConverted(String contentType){
+        return contentType.toLowerCase().contains("xml");
     }
 
     @Override
-    public boolean canWrite(Class<?> cls) {
-        return true;
-    }
-
-    @Override
-    public <T> T convert(Request request, Class<T> cls) {
-        XmlMapper xmlMapper = new XmlMapper();
+    public <T> T convert(byte[] body, Class<T> cls) {
         T result = null;
-        String str = new String(request.getBody(), StandardCharsets.UTF_8);
         try {
-            result = xmlMapper.readValue(str, cls);
+            result = new XmlMapper().readValue(new String(body, StandardCharsets.UTF_8), cls);
         } catch (JsonMappingException  e) {
             return null;
         } catch (JsonProcessingException e) {
             return null;
+        }
+        return result;
+    }
+
+    @Override
+    public <T> String unconvert(T object){
+        String result = null;
+        try {
+            result = new XmlMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            result = null;
         }
         return result;
     }

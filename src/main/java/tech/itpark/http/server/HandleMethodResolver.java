@@ -1,4 +1,4 @@
-package tech.itpark.http;
+package tech.itpark.http.server;
 
 import java.io.OutputStream;
 import java.lang.reflect.Method;

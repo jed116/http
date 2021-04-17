@@ -10,12 +10,13 @@ public class Client {
   public static void main(String[] args) {
     // pattern builder -> промежуточный объект нужный только для удобного создания объекта другого класса
     final var client = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1)
         .build();
 
 //POST
     final var request = HttpRequest.newBuilder()
         .uri(URI.create("http://localhost:8888/API/uSeRs/"))
-            .header ("Content-Type", "application/json")
+        .setHeader ("Content-Type", "application/json")
         .POST(HttpRequest.BodyPublishers.ofString("{\"id\": 1, \"name\": \"First\" }"))
         .build();
 
@@ -30,6 +31,7 @@ public class Client {
     try {
 //      final var response = client.send(request, HttpResponse.BodyHandlers.discarding());
       final var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      return;
     } catch (IOException e) {
       e.printStackTrace();
     } catch (InterruptedException e) {
